@@ -3,7 +3,7 @@ import ntpclient
 import random
 import time
 
-from machine import I2C, Pin, SPI
+from machine import Pin
 
 # Custom imports
 import config
