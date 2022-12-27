@@ -12,8 +12,6 @@ import config
 
 # Global variables
 wlan = None
-soil_is_dry = False
-
 
 # set the random seed, so messages are randomized
 random.seed()
@@ -21,7 +19,7 @@ random.seed()
 def ensure_wifi_connected():
     # check if the Wi-Fi interface is connected
     if not config.WIFI_ENABLED:
-        print("WIFI not enabled, check your config!")
+        print("WIFI not enabled; change your config if you want wifi capabilities enabled.")
         return
     print("ensure_wifi_connected")
     import network
@@ -80,14 +78,9 @@ def main():
                 print(has_water)
                 if soil_moisture >= config.SOIL_WET_THRESHOLD and has_water:
                     print(f"position: {position}")
-                    # soil was NOT dry, but is dry now
-                    soil_is_dry = True
                     pumps[position].dose(1, 30.0)
                     time.sleep(1)
             except Exception as e:
                 print(e)
 
         print(f"soil_moistures = {soil_moisturues}")
-
-
-main()
