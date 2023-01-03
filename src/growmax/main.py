@@ -69,11 +69,11 @@ def main():
             # Potentially no wi-fi
             pass
 
-        soil_moisturues = []
+        soil_moistures = []
         for position, soil_sensor in enumerate(soil_sensors):
             try:
                 soil_moisture = soil_sensor.moisture
-                soil_moisturues.append(soil_moisture)
+                soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
                 print(has_water)
                 if soil_moisture >= config.SOIL_WET_THRESHOLD and has_water:
@@ -83,4 +83,4 @@ def main():
             except Exception as e:
                 print(e)
 
-        print(f"soil_moistures = {soil_moisturues}")
+        print(f"soil_moistures = {soil_moistures}")
