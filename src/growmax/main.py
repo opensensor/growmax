@@ -4,9 +4,10 @@ from machine import Pin
 
 from growmax import ntpclient
 from growmax.moisture import Moisture
-from growmax import pump
+from growmax.pump import Pump
+from growmax.utils.configs import get_moisture_threshold_for_position
 
-# Custom imports
+# User's config file
 import config
 
 
@@ -57,8 +58,8 @@ def main():
 
     soil_sensors = [Moisture(channel=1), Moisture(channel=2), Moisture(channel=3), Moisture(channel=4),
                     Moisture(channel=5), Moisture(channel=6), Moisture(channel=7), Moisture(channel=8)]
-    pumps = [pump.Pump(channel=1), pump.Pump(channel=2), pump.Pump(channel=3), pump.Pump(channel=4),
-             pump.Pump(channel=5), pump.Pump(channel=6), pump.Pump(channel=7), pump.Pump(channel=8)]
+    pumps = [Pump(channel=1), Pump(channel=2), Pump(channel=3), Pump(channel=4),
+             Pump(channel=5), Pump(channel=6), Pump(channel=7), Pump(channel=8)]
 
 
     time.sleep(0.1)
@@ -75,12 +76,12 @@ def main():
                 soil_moisture = soil_sensor.moisture
                 soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
-                print(has_water)
-                if soil_moisture >= config.SOIL_WET_THRESHOLD and has_water:
+                print(f"Position {position } reservoir has water {has_water} and moisture value {soil_moisture}")
+                if has_water and soil_moisture >= get_moisture_threshold_for_position(position):
                     print(f"position: {position}")
                     pumps[position].dose(1, 30.0)
                     time.sleep(1)
             except Exception as e:
-                print(e)
+                print(f"Exception: {e}")
 
-        print(f"soil_moistures = {soil_moistures}")
+        print(f"Completed iteration; soil_moistures = {soil_moistures}")

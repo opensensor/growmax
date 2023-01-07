@@ -16,17 +16,25 @@ Go to Tools -> Manage Packages and search for ``growmax``
 Install the latest version of ``growmax``.
 
 Now create a new file and save it to your device as ``main.py``
+In this file invoke the main routine of growmax:
+```
+from growmax.main import main
 
-Next you need to create the config file.
-Open the sample config file from the pico device, it is at ``/lib/growmax/config.py``
+main() 
+```
 
-Now save this file to the root of your pico device as ``config.py``
+Next you need to create your config file.
+* Open the sample config file from the pico device, it is at ``/lib/growmax/config.py``
+* Now save this file to the root of your pico device as ``config.py``
+* Modify any relevant config values to suit your needs for automatic plant watering.
 
-Modify any relevant config values to suit your needs for automatic plant watering.
+# Configuration
 
+* `WATER_SENSOR_LOW_ENABLED` Defaults `True`. Checks the low water level sensor before invoking the pumps.  Note: as a safety precaution, when this is disabled the pumps will not turn on to prevent pump burn out.
+* `WATER_SENSOR_LOW` Defaults `21`.  Which GPIO port has the Optomax water level sensor for low levels?  Supported `growmax` board ports are 21 and 22 
 
 # Verification
-Test the routine by running the ``main.py`` in Thonny IDE.  You should see output in the terminal and the program should not have any errors.
+Test the routine by running the created ``main.py`` in Thonny IDE.  You should see output in the terminal and the program should not have any errors.
 
 Once you have verified the pico runs the code properly, your device is now plug and play ready.  
 Simply supply 5V USB voltage by plugging the pico growmax board into a common USB wall wart and the pico will boot the ``main`` routine.
