@@ -1,10 +1,9 @@
 # growmax
-Micropython routines for GrowMax plant watering automation boards by opensensor.io
+Micropython routines for GrowMax plant watering automation boards by OpenSensor.io
 
 
 # Installation
-To install the ``growmax`` package on a Pico or Pico W, first install the appropriate firmware for Micropython
-that is for your device.
+To install the ``growmax`` package on a Pico or Pico W, first install the appropriate firmware for Micropython that is for your device.
 * Pico: https://micropython.org/download/rp2-pico/
 * Pico W:  https://micropython.org/download/rp2-pico-w/
 
