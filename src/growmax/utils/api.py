@@ -8,8 +8,9 @@ import config
 headers = {'content-type': 'application/json'}
 
 def read_and_report_adafruit_scd4x(scd4x):
+    """This method requires installing urequests and ujson from pypi."""
     try:
-        from growmax import urequests
+        import urequests
         import ujson
         data = sensors.read_adafruit_scd4x(scd4x)
         time.sleep(1.0)
