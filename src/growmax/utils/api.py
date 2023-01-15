@@ -10,7 +10,7 @@ headers = {'content-type': 'application/json'}
 def read_and_report_adafruit_scd4x(scd4x):
     try:
         from growmax import urequests
-        from growmax import ujson
+        import ujson
         data = sensors.read_adafruit_scd4x(scd4x)
         time.sleep(1.0)
         device_id = ubinascii.hexlify(machine.unique_id()).decode()
