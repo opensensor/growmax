@@ -21,7 +21,7 @@ def read_and_report_adafruit_scd4x(scd4x):
             "rh": {
                 "rh": data[1],
             },
-            "CO2": {
+            "co2": {
                 "ppm": data[2],
             }
         }
