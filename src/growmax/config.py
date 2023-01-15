@@ -22,3 +22,4 @@ ADAFRUIT_SCD4X_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
 # Data collection w/ api.opensensor.io (early alpha testing)
 OPEN_SENSOR_COLLECT_DATA = False  # Please don't enable this for now
 OPEN_SENSOR_API_KEY = None  # Not yet supported
+DEVICE_NAME = ""

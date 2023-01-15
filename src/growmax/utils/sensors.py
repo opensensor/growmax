@@ -9,16 +9,21 @@ def init_adafruit_scd4x(i2c_channel=0):
     if i2c_channel == 1:
         pin_scl = 19
         pin_sda = 18
-    i2c = machine.I2C(i2c_channel, scl=machine.Pin(pin_scl), sda=machine.Pin(pin_sda))
-    scd4x = adafruit_scd4x.SCD4X(i2c)
-    time.sleep(0.5)
-    print("Serial number:", [hex(i) for i in scd4x.serial_number])
-    time.sleep(0.5)
-    scd4x.start_periodic_measurement()
-    print("Waiting for first measurement....")
-    time.sleep(0.5)
-
-    return scd4x
+    try:
+        time.sleep(2.0)
+        i2c = machine.I2C(i2c_channel, scl=machine.Pin(pin_scl), sda=machine.Pin(pin_sda), freq=5000)
+        time.sleep(2.0)
+        scd4x = adafruit_scd4x.SCD4X(i2c)
+        time.sleep(2.0)
+        print("Serial number:", [hex(i) for i in scd4x.serial_number])
+        time.sleep(1.0)
+        scd4x.start_periodic_measurement()
+        print("Waiting for first measurement....")
+        time.sleep(1.0)
+        return scd4x
+    except Exception as e:
+        print(e)
+    return None
 
 def read_adafruit_scd4x(scd4x):
     if scd4x.data_ready:

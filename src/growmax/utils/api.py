@@ -1,18 +1,24 @@
 import machine
 import ubinascii
-
+import time
 from growmax.utils import sensors
+
+import config
+
+headers = {'content-type': 'application/json'}
 
 def read_and_report_adafruit_scd4x(scd4x):
     try:
-        import urequests
-        import ujson
+        from growmax import urequests
+        from growmax import ujson
         data = sensors.read_adafruit_scd4x(scd4x)
+        time.sleep(1.0)
         device_id = ubinascii.hexlify(machine.unique_id()).decode()
+        time.sleep(1.0)
         report_data = {
             "device_metadata": {
                 "device_id": device_id,
-                "name": "matt_d_pico_w_test",
+                "name": config.DEVICE_NAME,
             },
             "temp": {
                 "temp": data[0],
@@ -21,16 +27,19 @@ def read_and_report_adafruit_scd4x(scd4x):
             "rh": {
                 "rh": data[1],
             },
-            "CO2": {
+            "co2": {
                 "ppm": data[2],
             }
         }
+        time.sleep(1.0)
         resp = urequests.post(
             "https://api.opensensor.io/environment/",
-            headers={'content-type': 'application/json'},
+            headers=headers,
             data=ujson.dumps(report_data))
-        print(resp.text)
+        print(resp.status_code)
+        resp.close()
         return data
     except Exception as e:
         print(e)
     return None
+
