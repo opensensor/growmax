@@ -55,6 +55,10 @@ def main():
     water_sensor = None
     if config.WATER_SENSOR_LOW_ENABLED:
         water_sensor = Pin(config.WATER_SENSOR_LOW, Pin.IN, Pin.PULL_DOWN)
+    scd40x = None
+    if config.ADAFRUIT_SCD4X_ENABLED:
+        from growmax.utils.sensors import init_adafruit_scd4x
+        scd40x = init_adafruit_scd4x(config.ADAFRUIT_SCD4X_I2C_CHANNEL)
 
     soil_sensors = [Moisture(channel=1), Moisture(channel=2), Moisture(channel=3), Moisture(channel=4),
                     Moisture(channel=5), Moisture(channel=6), Moisture(channel=7), Moisture(channel=8)]
@@ -83,5 +87,13 @@ def main():
                     time.sleep(1)
             except Exception as e:
                 print(f"Exception: {e}")
+
+        if scd40x:
+            if config.OPEN_SENSOR_COLLECT_DATA:
+                from growmax.utils.api import read_and_report_adafruit_scd4x
+                read_and_report_adafruit_scd4x(scd40x)
+            else:
+                from growmax.utils.sensors import read_adafruit_scd4x
+                read_adafruit_scd4x(scd40x)
 
         print(f"Completed iteration; soil_moistures = {soil_moistures}")

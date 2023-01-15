@@ -14,3 +14,11 @@ WATER_SENSOR_LOW_ENABLED = True
 WATER_SENSOR_LOW = 21
 WATER_SENSOR_HIGH_ENABLED = False  # Not yet implemented
 WATER_SENSOR_HIGH = 22  # Not yet implemented
+
+# Auxiliary Sensors settings
+ADAFRUIT_SCD4X_ENABLED = False
+ADAFRUIT_SCD4X_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
+
+# Data collection w/ api.opensensor.io (early alpha testing)
+OPEN_SENSOR_COLLECT_DATA = False  # Please don't enable this for now
+OPEN_SENSOR_API_KEY = None  # Not yet supported
