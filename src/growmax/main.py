@@ -66,7 +66,7 @@ def main():
     pumps = [Pump(channel=1), Pump(channel=2), Pump(channel=3), Pump(channel=4),
              Pump(channel=5), Pump(channel=6), Pump(channel=7), Pump(channel=8)]
 
-    time.sleep(0.5)
+    time.sleep(5.0)
     while True:
         try:
             ensure_wifi_connected()
@@ -86,9 +86,9 @@ def main():
                 soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
                 print(f"Position {position} reservoir has water {has_water} and moisture value {soil_moisture}")
-                if has_water and soil_moisture >= get_moisture_threshold_for_position(position):
+                if config.PUMP_WHEN_DRY and has_water and soil_moisture >= get_moisture_threshold_for_position(position):
                     print(f"position: {position}")
-                    pumps[position].dose(1, 30.0)
+                    pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
                     time.sleep(1)
             except Exception as e:
                 print(f"Exception: {e}")

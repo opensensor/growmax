@@ -15,6 +15,11 @@ WATER_SENSOR_LOW = 21
 WATER_SENSOR_HIGH_ENABLED = False  # Not yet implemented
 WATER_SENSOR_HIGH = 22  # Not yet implemented
 
+# Pump settings
+PUMP_WHEN_DRY = True
+PUMP_CYCLE_DURATION = 30  # seconds -- avoid long pump times as it does not check if reservoir is low while pumping!
+
+
 # Auxiliary Sensors settings
 ADAFRUIT_SCD4X_ENABLED = False
 ADAFRUIT_SCD4X_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1

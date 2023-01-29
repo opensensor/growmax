@@ -56,9 +56,8 @@ class Pump(object):
         :param blocking: If true, function will block until pump has stopped
         :param force: Applies only to non-blocking. If true, any previous dose will be replaced
         """
-        print(f"Dose pump {self._pin}")
+        print(f"Dose pump on GPIO pin {self._pin} at speed {speed} for {timeout} seconds.")
         if self.set_speed(speed):
-            print("set_speed")
             time.sleep(timeout)
             self.stop()
             return True
