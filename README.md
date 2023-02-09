@@ -17,7 +17,7 @@ Install the latest version of ``growmax``.
 Now create a new file and save it to your device as ``main.py``
 In this file invoke the main routine of growmax:
 ```
-from growmax.main import main
+from growmax.routine import main
 
 main() 
 ```
