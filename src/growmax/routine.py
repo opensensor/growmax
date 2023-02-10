@@ -70,7 +70,6 @@ def main():
     pumps = [Pump(channel=1), Pump(channel=2), Pump(channel=3), Pump(channel=4),
              Pump(channel=5), Pump(channel=6), Pump(channel=7), Pump(channel=8)]
 
-    time.sleep(5.0)
     while True:
         try:
             ensure_wifi_connected()
@@ -120,4 +119,5 @@ def main():
         print(f"Free mem before garbage collection: {gc.mem_free()}")
         gc.collect()
         print(f"Free mem after garbage collection: {gc.mem_free()}")
+        time.sleep(5.0)
 

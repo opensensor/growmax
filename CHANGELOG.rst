@@ -1,6 +1,9 @@
-Growmax v1.1.1
+Growmax v1.1.2
 ==============================
 * Add 5 second sleep in ``main`` routine to provide enough time to get accurate moisture readings during fast loop cycles.
+
+Growmax v1.1.1
+==============================
 * Add try/except handling around new display logic, along with additional garbage collection.
 
 Growmax v1.1.0
