@@ -1,3 +1,9 @@
+Growmax v1.1.0
+==============================
+* Support for I2C displays and supporting switches to enable/disable the display.
+* Initial supported display: ssd1327 (Ex: Adafruit 4741)
+* Swap default values for ``WATER_SENSOR_HIGH`` and ``WATER_SENSOR_LOW`` to better match physical orientation of the board.
+
 Growmax v1.0.9
 ==============================
 * Improve measuring accuracy of the Grow moisture sensor ports by increasing the cycle measurement time.

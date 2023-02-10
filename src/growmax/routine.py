@@ -7,6 +7,7 @@ from growmax import ntpclient
 from growmax.moisture import Moisture
 from growmax.pump import Pump
 from growmax.utils.configs import get_moisture_threshold_for_position
+from growmax.utils.displays import display, boot_sequence
 
 # User's config file
 import config
@@ -56,6 +57,9 @@ def statistically_has_water(water_sensor):
 
 
 def main():
+    if display:
+        boot_sequence()
+
     water_sensor = None
     if config.WATER_SENSOR_LOW_ENABLED:
         water_sensor = Pin(config.WATER_SENSOR_LOW, Pin.IN, Pin.PULL_DOWN)
@@ -85,8 +89,15 @@ def main():
                 soil_moisture = soil_sensor.moisture
                 soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
-                print(f"Position {position} reservoir has water {has_water} and moisture value {soil_moisture}")
-                if config.PUMP_WHEN_DRY and has_water and soil_moisture >= get_moisture_threshold_for_position(position):
+                pos_config = get_moisture_threshold_for_position(position)
+                print(
+                    f"Position {position + 1} reservoir has water {has_water} and moisture value {soil_moisture}/{pos_config}")
+                if display:
+                    display.fill(0)
+                    display.text(f"Water {has_water}", 0, 0)
+                    display.text(f"P {position + 1} Reads {soil_moisture}/{pos_config}", 0, 20)
+                    display.show()
+                if config.PUMP_WHEN_DRY and has_water and soil_moisture >= pos_config:
                     print(f"position: {position}")
                     pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
                     time.sleep(1)
@@ -105,3 +116,4 @@ def main():
         print(f"Free mem before garbage collection: {gc.mem_free()}")
         gc.collect()
         print(f"Free mem after garbage collection: {gc.mem_free()}")
+

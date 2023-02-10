@@ -5,7 +5,7 @@ from growmax.sensors import adafruit_scd4x
 
 def init_adafruit_scd4x(i2c_channel=0):
     pin_scl = 1
-    pin_sda = 2
+    pin_sda = 0
     if i2c_channel == 1:
         pin_scl = 19
         pin_sda = 18
