@@ -6,29 +6,34 @@ display = None
 
 
 def toggle_display(pin):
-    global display
-    if display:
-        if pin.value():
-            display.poweron()
-        else:
-            display.poweroff()
+    try:
+        global display
+        if display:
+            if pin.value():
+                display.poweron()
+            else:
+                display.poweroff()
+    except Exception as e:
+        print(e)
 
 
-if config.DISPLAY:
-    if config.DISPLAY == "SSD1327_I2C":
-        from growmax.displays.ssd1327 import SSD1327_I2C
+try:
+    if config.DISPLAY:
+        if config.DISPLAY == "SSD1327_I2C":
+            from growmax.displays.ssd1327 import SSD1327_I2C
 
-        scl = machine.Pin(1)
-        sda = machine.Pin(0)
-        if config.DISPLAY_I2C_CHANNEL == 1:
-            scl = machine.Pin(19)
-            sda = machine.Pin(18)
-        i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
-        display = SSD1327_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
-    if config.DISPLAY_SWITCH:
-        switch = machine.Pin(config.DISPLAY_SWITCH, machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
-        switch.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)
-
+            scl = machine.Pin(1)
+            sda = machine.Pin(0)
+            if config.DISPLAY_I2C_CHANNEL == 1:
+                scl = machine.Pin(19)
+                sda = machine.Pin(18)
+            i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
+            display = SSD1327_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
+        if config.DISPLAY_SWITCH:
+            switch = machine.Pin(config.DISPLAY_SWITCH, machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
+            switch.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)
+except Exception as exc:
+    print(f"Exception trying to initialize display: {exc}")
 
 def micropython_logo():
     global display
@@ -45,8 +50,11 @@ def micropython_logo():
 
 
 def boot_sequence():
-    global display
-    display.poweron()
-    micropython_logo()
-    time.sleep(5.0)
-    display.poweroff()
+    try:
+        global display
+        display.poweron()
+        micropython_logo()
+        time.sleep(5.0)
+        display.poweroff()
+    except Exception as e:
+        print(e)

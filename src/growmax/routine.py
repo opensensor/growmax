@@ -93,12 +93,16 @@ def main():
                 print(
                     f"Position {position + 1} reservoir has water {has_water} and moisture value {soil_moisture}/{pos_config}")
                 if display:
-                    display.fill(0)
-                    display.text(f"Water {has_water}", 0, 0)
-                    display.text(f"P {position + 1} Reads {soil_moisture}/{pos_config}", 0, 20)
-                    display.show()
+                    try:
+                        gc.collect()
+                        display.fill(0)
+                        display.text(f"Water {has_water}", 0, 0)
+                        display.text(f"P {position + 1} Reads {soil_moisture}/{pos_config}", 0, 20)
+                        display.show()
+                    except Exception as e:
+                        print(e)
                 if config.PUMP_WHEN_DRY and has_water and soil_moisture >= pos_config:
-                    print(f"position: {position}")
+                    print(f"position: {position+1}")
                     pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
                     time.sleep(1)
             except Exception as e:

@@ -1,7 +1,13 @@
+Growmax v1.1.1
+==============================
+* Add 5 second sleep in ``main`` routine to provide enough time to get accurate moisture readings during fast loop cycles.
+* Add try/except handling around new display logic, along with additional garbage collection.
+
 Growmax v1.1.0
 ==============================
 * Support for I2C displays and supporting switches to enable/disable the display.
 * Initial supported display: ssd1327 (Ex: Adafruit 4741)
+* Renamed ``main.py`` to ``routine.py`` to avoid issues with having two files opened named ``main.py`` in Thonny IDE.
 * Swap default values for ``WATER_SENSOR_HIGH`` and ``WATER_SENSOR_LOW`` to better match physical orientation of the board.
 
 Growmax v1.0.9
