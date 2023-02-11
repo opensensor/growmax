@@ -18,7 +18,7 @@ WATER_SENSOR_HIGH_ENABLED = False  # Not yet implemented
 WATER_SENSOR_HIGH = 21  # Not yet implemented
 
 # Pump settings
-PUMP_WHEN_DRY = True
+PUMP_WHEN_DRY = False
 PUMP_CYCLE_DURATION = 30  # seconds -- avoid long pump times as it does not check if reservoir is low while pumping!
 
 

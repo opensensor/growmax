@@ -1,3 +1,7 @@
+Growmax v1.1.3
+==============================
+* Reduce usage of f-strings to improve memory usage.
+
 Growmax v1.1.2
 ==============================
 * Add 5 second sleep in ``main`` routine to provide enough time to get accurate moisture readings during fast loop cycles.

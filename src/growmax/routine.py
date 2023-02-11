@@ -85,27 +85,36 @@ def main():
         soil_moistures = []
         for position, soil_sensor in enumerate(soil_sensors):
             try:
+                pump_position = str(position + 1)
                 soil_moisture = soil_sensor.moisture
                 soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
                 pos_config = get_moisture_threshold_for_position(position)
-                print(
-                    f"Position {position + 1} reservoir has water {has_water} and moisture value {soil_moisture}/{pos_config}")
+                print("Position ", pump_position,
+                      " reservoir has water ", has_water,
+                      " and moisture value ", soil_moisture, "/", pos_config)
                 if display:
                     try:
                         gc.collect()
                         display.fill(0)
-                        display.text(f"Water {has_water}", 0, 0)
-                        display.text(f"P {position + 1} Reads {soil_moisture}/{pos_config}", 0, 20)
+                        display.text("Water ", 0, 0)
+                        display.text(str(has_water), 64, 0)
+                        display.text("P ", 0, 20)
+                        display.text(pump_position, 9, 20)
+                        display.text("Reads: ", 22, 20)
+                        display.text(str(soil_moisture), 64, 20)
+                        display.text("Config:", 0, 40)
+                        display.text(str(pos_config), 64, 40)
                         display.show()
+                        gc.collect()
                     except Exception as e:
                         print(e)
-                if config.PUMP_WHEN_DRY and has_water and soil_moisture >= pos_config:
-                    print(f"position: {position+1}")
+                if (config.PUMP_WHEN_DRY or has_water) and soil_moisture >= pos_config:
+                    print("position: ", pump_position)
                     pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
-                    time.sleep(1)
+                time.sleep(2)
             except Exception as e:
-                print(f"Exception: {e}")
+                print("Exception: ", str(e))
 
         if scd40x:
             if config.OPEN_SENSOR_COLLECT_DATA:
@@ -115,9 +124,9 @@ def main():
                 from growmax.utils.sensors import read_adafruit_scd4x
                 read_adafruit_scd4x(scd40x)
 
-        print(f"Completed iteration; soil_moistures = {soil_moistures}")
-        print(f"Free mem before garbage collection: {gc.mem_free()}")
+        print("Completed iteration; soil_moistures = ", str(soil_moistures))
+        print("Free mem before garbage collection: ", str(gc.mem_free()))
         gc.collect()
-        print(f"Free mem after garbage collection: {gc.mem_free()}")
+        print("Free mem after garbage collection: ", str(gc.mem_free()))
         time.sleep(5.0)
 
