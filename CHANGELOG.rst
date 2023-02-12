@@ -1,3 +1,7 @@
+Growmax v1.1.4
+==============================
+* Add support for sh1107 I2C displays -- set the config ``DISPLAY = "SH1107_I2C"`` to use this kind of display.
+
 Growmax v1.1.3
 ==============================
 * Reduce usage of f-strings to improve memory usage.

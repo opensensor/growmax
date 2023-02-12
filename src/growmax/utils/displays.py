@@ -19,16 +19,19 @@ def toggle_display(pin):
 
 try:
     if config.DISPLAY:
+        scl = machine.Pin(1)
+        sda = machine.Pin(0)
+        if config.DISPLAY_I2C_CHANNEL == 1:
+            scl = machine.Pin(19)
+            sda = machine.Pin(18)
         if config.DISPLAY == "SSD1327_I2C":
             from growmax.displays.ssd1327 import SSD1327_I2C
-
-            scl = machine.Pin(1)
-            sda = machine.Pin(0)
-            if config.DISPLAY_I2C_CHANNEL == 1:
-                scl = machine.Pin(19)
-                sda = machine.Pin(18)
             i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
             display = SSD1327_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
+        if config.DISPLAY == "SH1107_I2C":
+            from growmax.displays.sh1107 import SH1107_I2C
+            i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
+            display = SH1107_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
         if config.DISPLAY_SWITCH:
             switch = machine.Pin(config.DISPLAY_SWITCH, machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
             switch.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)

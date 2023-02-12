@@ -27,7 +27,7 @@ ADAFRUIT_SCD4X_ENABLED = False
 ADAFRUIT_SCD4X_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
 
 # I2C Displays
-DISPLAY = None   # To enable a display, define an import from growmax.displays, Ex: "SSD1327_I2C"
+DISPLAY = None   # To enable a display, define an import from growmax.displays, Ex: "SSD1327_I2C", "SH1107_I2C"
 DISPLAY_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
 DISPLAY_I2C_ADDRESS = None  # The address of the display
 DISPLAY_SWITCH = None  # Set GPIO Pin number of the input switch
