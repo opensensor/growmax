@@ -3,6 +3,7 @@ Micropython routines for GrowMax plant watering automation boards by OpenSensor.
 
 To purchase a Growmax board or four sourcing parts, visit https://opensensor.io
 
+![Growmax Board install with screen and i2c CO2 sensor](https://github.com/opensensor/growmax/blob/main/images/growmax_install_with_screen.jpg)
 
 
 # Installation
