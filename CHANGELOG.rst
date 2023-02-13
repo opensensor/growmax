@@ -1,3 +1,7 @@
+Growmax v1.1.5
+==============================
+* Move networking logic into ``utils.wifi`` and made the ``routine.main`` more safe for devices without networking support.
+
 Growmax v1.1.4
 ==============================
 * Add support for sh1107 I2C displays -- set the config ``DISPLAY = "SH1107_I2C"`` to use this kind of display.
