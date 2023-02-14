@@ -33,8 +33,10 @@ Next you need to create your config file.
 
 # Configuration
 
-* `WATER_SENSOR_LOW_ENABLED` Defaults `True`. Checks the low water level sensor before invoking the pumps.  Note: as a safety precaution, when this is disabled the pumps will not turn on to prevent pump burn out.
-* `WATER_SENSOR_LOW` Defaults `21`.  Which GPIO port has the Optomax water level sensor for low levels?  Supported `growmax` board ports are 21 and 22 
+* `WATER_SENSOR_LOW_ENABLED` Defaults `True`. Checks the low water level sensor before invoking the pumps.
+* `WATER_SENSOR_LOW` Defaults `22`.  Which GPIO port has the Optomax water level sensor for low levels?  Supported `growmax` board ports are 21 and 22 
+* Much more:
+[Complete and latest default config](https://github.com/opensensor/growmax/blob/main/src/growmax/config.py)
 
 # Verification
 Test the routine by running the created ``main.py`` in Thonny IDE.  You should see output in the terminal and the program should not have any errors.
