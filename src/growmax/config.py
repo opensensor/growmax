@@ -1,10 +1,8 @@
 import machine
 
-# Wi-Fi SSID and password
-WIFI_ENABLED = False
-WIFI_SSID = "SSID"
-WIFI_PASSWORD = ""
-
+# Support for RP2040 enabled by default (regardless of value)
+# Also supported:  ESP32S3_BPI
+GROWMAX_MCU = "RP2040"
 
 # Threshold value for moisture sensor (range 0-28)
 # Note: you may set value per plant by assigning an array length 8, Ex: [7, 7, 10, 8, 9, 12, 13, 10]
@@ -33,6 +31,11 @@ DISPLAY_I2C_ADDRESS = None  # The address of the display
 DISPLAY_SWITCH = None  # Set GPIO Pin number of the input switch
 DISPLAY_SWITCH_PULL = None  # Set to be None, machine.Pin.PULL_UP or machine.Pin.PULL_DOOWN
 DISPLAY_SWITCH_TRIGGER = machine.Pin.IRQ_FALLING | machine.Pin.IRQ_RISING
+
+# Wi-Fi SSID and password
+WIFI_ENABLED = False
+WIFI_SSID = "SSID"
+WIFI_PASSWORD = ""
 
 # Data collection w/ api.opensensor.io (early alpha testing)
 OPEN_SENSOR_COLLECT_DATA = False  # Please don't enable this for now
