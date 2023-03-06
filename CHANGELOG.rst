@@ -1,3 +1,7 @@
+Growmax v1.1.6
+==============================
+* Add optional support for alternative MCU ESP32S3_BPI https://wiki.banana-pi.org/BPI-PicoW-S3 with config option ``GROWMAX_MCU``.
+
 Growmax v1.1.5
 ==============================
 * Move networking logic into ``utils.wifi`` and made the ``routine.main`` more safe for devices without networking support.

@@ -5,6 +5,9 @@
 import utime
 import machine
 
+from growmax import constants
+from growmax.utils.mcu import get_gpio_for_mcu
+
 
 class Moisture(object):
     """Grow moisture sensor driver."""
@@ -17,7 +20,8 @@ class Moisture(object):
         :param wet_point: Wet point in pulses/sec
         :param dry_point: Dry point in pulses/sec
         """
-        self._gpio_pin = [10, 11, 12, 13, 14, 15, 17, 16][channel - 1]
+        rp2040_pin = constants.MOISTURE_GPIOS[channel - 1]
+        self._gpio_pin = get_gpio_for_mcu(rp2040_pin)
         pin = machine.Pin(self._gpio_pin, machine.Pin.IN, machine.Pin.PULL_UP)
 
         self._count = 0

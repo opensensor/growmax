@@ -5,6 +5,10 @@
 import machine
 import time
 
+from growmax import constants
+from growmax.utils.mcu import get_gpio_for_mcu
+
+
 PUMP_PWM_FREQ = 10000
 PUMP_MAX_DUTY = 65535
 
@@ -14,11 +18,12 @@ class Pump(object):
 
     def __init__(self, channel=1):
         """Create a new pump.
-        Uses soft PWM to drive a Grow pump.
+        Uses soft PWM to drive a micro submersible water pump.
         :param channel: One of 1, 2 or 3.
         """
         self._speed = 0
-        self._pin = [2, 3, 4, 5, 6, 7, 8, 9][channel - 1]
+        rp2040_pin = constants.PUMP_GPIOS[channel - 1]
+        self._pin = get_gpio_for_mcu(rp2040_pin)
         self._gpio_pin = machine.Pin(self._pin)
 
         self._pwm = machine.PWM(self._gpio_pin)
