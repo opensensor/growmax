@@ -1,3 +1,7 @@
+Growmax v1.1.8
+==============================
+* Fix bug with the new pH meter code to work with esp32s3 MCU.
+
 Growmax v1.1.7
 ==============================
 * Add initial support for Atlas Scientific digital pH meters. Plus some general refactoring.
