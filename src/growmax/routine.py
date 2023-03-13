@@ -6,7 +6,8 @@ from machine import Pin
 from growmax.moisture import Moisture
 from growmax.pump import Pump
 from growmax.utils.configs import get_moisture_threshold_for_position
-from growmax.utils.displays import display, boot_sequence
+from growmax.utils.displays import boot_sequence, display_basic_stats
+from growmax.utils.water import statistically_has_water
 from growmax.utils.wifi import ensure_wifi_connected
 
 # User's config file
@@ -15,18 +16,9 @@ import config
 # set the random seed, so messages are randomized
 random.seed()
 
-def statistically_has_water(water_sensor):
-    for x in range(0, 3):
-        water_in_bucket = not water_sensor.value()
-        if not water_in_bucket:
-            return False
-        time.sleep(0.5)
-    return True
-
 
 def main():
-    if display:
-        boot_sequence()
+    boot_sequence()
 
     water_sensor = None
     if config.WATER_SENSOR_LOW_ENABLED:
@@ -58,27 +50,12 @@ def main():
                 soil_moisture = soil_sensor.moisture
                 soil_moistures.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
-                pos_config = get_moisture_threshold_for_position(position)
+                moisture_config = get_moisture_threshold_for_position(position)
                 print("Position ", pump_position,
                       " reservoir has water ", has_water,
-                      " and moisture value ", soil_moisture, "/", pos_config)
-                if display:
-                    try:
-                        gc.collect()
-                        display.fill(0)
-                        display.text("Water ", 0, 0)
-                        display.text(str(has_water), 64, 0)
-                        display.text("P ", 0, 20)
-                        display.text(pump_position, 9, 20)
-                        display.text("Reads: ", 22, 20)
-                        display.text(str(soil_moisture), 64, 20)
-                        display.text("Config:", 0, 40)
-                        display.text(str(pos_config), 64, 40)
-                        display.show()
-                        gc.collect()
-                    except Exception as e:
-                        print(e)
-                if (config.PUMP_WHEN_DRY or has_water) and soil_moisture >= pos_config:
+                      " and moisture value ", soil_moisture, "/", moisture_config)
+                display_basic_stats(has_water, pump_position, soil_moisture, moisture_config)
+                if (config.PUMP_WHEN_DRY or has_water) and soil_moisture >= moisture_config:
                     print("position: ", pump_position)
                     pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
                 time.sleep(2)
@@ -93,7 +70,7 @@ def main():
                 from growmax.utils.sensors import read_adafruit_scd4x
                 read_adafruit_scd4x(scd40x)
 
-        print("Completed iteration; soil_moistures = ", str(soil_moistures))
+        print("Completed iteration; soil_moisture's = ", str(soil_moistures))
         print("Free mem before garbage collection: ", str(gc.mem_free()))
         gc.collect()
         print("Free mem after garbage collection: ", str(gc.mem_free()))
