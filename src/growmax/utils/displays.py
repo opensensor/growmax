@@ -1,3 +1,4 @@
+import gc
 import machine
 import time
 
@@ -45,6 +46,7 @@ try:
 except Exception as exc:
     print(f"Exception trying to initialize display: {exc}")
 
+
 def micropython_logo():
     global display
     x = (display.width - 69) // 2
@@ -60,11 +62,47 @@ def micropython_logo():
 
 
 def boot_sequence():
-    try:
-        global display
-        display.poweron()
-        micropython_logo()
-        time.sleep(5.0)
-        display.poweroff()
-    except Exception as e:
-        print(e)
+    global display
+    if display:
+        try:
+            display.poweron()
+            micropython_logo()
+            time.sleep(5.0)
+            display.poweroff()
+        except Exception as e:
+            print(e)
+
+
+def display_basic_stats(has_water, pump_position, soil_moisture, moisture_config):
+    global display
+    if display:
+        try:
+            gc.collect()
+            display.fill(0)
+            display.text("Water ", 0, 0)
+            display.text(str(has_water), 64, 0)
+            display.text("P ", 0, 20)
+            display.text(pump_position, 9, 20)
+            display.text("Reads: ", 22, 20)
+            display.text(str(soil_moisture), 64, 20)
+            display.text("Config:", 0, 40)
+            display.text(str(moisture_config), 64, 40)
+            display.show()
+            gc.collect()
+        except Exception as e:
+            print(e)
+
+
+def display_ph_reading(ph_reading):
+    global display
+    print(ph_reading)
+    if display:
+        try:
+            gc.collect()
+            display.fill(0)
+            display.text("pH ", 0, 0)
+            display.text(str(ph_reading), 64, 0)
+            display.show()
+            gc.collect()
+        except Exception as e:
+            print(e)

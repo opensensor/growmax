@@ -1,3 +1,7 @@
+Growmax v1.1.7
+==============================
+* Add initial support for Atlas Scientific digital pH meters. Plus some general refactoring.
+
 Growmax v1.1.6
 ==============================
 * Add optional support for alternative MCU ESP32S3_BPI https://wiki.banana-pi.org/BPI-PicoW-S3 with config option ``GROWMAX_MCU``.

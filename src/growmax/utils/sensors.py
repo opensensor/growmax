@@ -1,15 +1,12 @@
 import machine
 import time
 from growmax.sensors import adafruit_scd4x
+from growmax.utils.i2c import i2c_channel_pins
 from growmax.utils.mcu import get_gpio_for_mcu
 
 
 def init_adafruit_scd4x(i2c_channel=0):
-    pin_scl = 1
-    pin_sda = 0
-    if i2c_channel == 1:
-        pin_scl = 19
-        pin_sda = 18
+    pin_scl, pin_sda = i2c_channel_pins(i2c_channel)
     try:
         time.sleep(2.0)
         i2c = machine.I2C(
@@ -30,6 +27,7 @@ def init_adafruit_scd4x(i2c_channel=0):
     except Exception as e:
         print(e)
     return None
+
 
 def read_adafruit_scd4x(scd4x):
     if scd4x.data_ready:
