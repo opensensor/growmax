@@ -91,3 +91,18 @@ def display_basic_stats(has_water, pump_position, soil_moisture, moisture_config
             gc.collect()
         except Exception as e:
             print(e)
+
+
+def display_ph_reading(ph_reading):
+    global display
+    print(ph_reading)
+    if display:
+        try:
+            gc.collect()
+            display.fill(0)
+            display.text("pH ", 0, 0)
+            display.text(str(ph_reading), 64, 0)
+            display.show()
+            gc.collect()
+        except Exception as e:
+            print(e)

@@ -15,8 +15,8 @@ class AtlasPHI2C:
         i2c_channel_pins(i2c_channel)
         self.i2c_bus = machine.I2C(i2c_channel, scl=machine.Pin(pin_scl), sda=machine.Pin(pin_sda), freq=100000)
 
-        if hasattr(config, "ATLAS_PH_I2C_ADDRESS"):
-            self.address = config.ATLAS_PH_I2C_ADDRESS
+        if hasattr(config, "ATLAS_PH_METER_ADDRESS"):
+            self.address = config.ATLAS_PH_METER_ADDRESS or DEFAULT_ADDRESS
         else:
             self.address = DEFAULT_ADDRESS
 
