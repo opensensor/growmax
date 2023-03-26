@@ -7,7 +7,8 @@ from growmax.moisture import Moisture
 from growmax.pump import Pump
 from growmax.utils import api
 from growmax.utils.configs import get_moisture_threshold_for_position
-from growmax.utils.displays import boot_sequence, display_basic_stats, display_ph_reading
+from growmax.utils.displays import boot_sequence, display_basic_stats, display_ph_reading, display_scd4x_reading
+from growmax.utils.sensors import read_adafruit_scd4x
 from growmax.utils.water import statistically_has_water
 from growmax.utils.wifi import ensure_wifi_connected
 
@@ -68,6 +69,9 @@ def main():
             except Exception as e:
                 print("Exception: ", str(e))
 
+        ph_reading = None
+        if atlas_ph:
+            ph_reading = atlas_ph.obtain_ph_reading()
         if config.OPEN_SENSOR_COLLECT_DATA:
             report_data = api.get_device_metadata()
             if scd40x:
@@ -75,12 +79,16 @@ def main():
             report_data["moisture"] = {
                 "readings": soil_moistures
             }
+            if atlas_ph and ph_reading:
+                report_data["pH"] = {
+                    "pH": ph_reading
+                }
             api.report_environment_data(report_data)
         elif scd40x:
-                from growmax.utils.sensors import read_adafruit_scd4x
-                read_adafruit_scd4x(scd40x)
+                temp, rh, ppm_carbon_dioxide = read_adafruit_scd4x(scd40x)
+                display_scd4x_reading(temp, rh, ppm_carbon_dioxide)
+                utime.sleep(3)
         if atlas_ph:
-            ph_reading = atlas_ph.obtain_ph_reading()
             display_ph_reading(ph_reading)
             utime.sleep(3)
 

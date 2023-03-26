@@ -1,3 +1,8 @@
+Growmax v1.1.10
+==============================
+* Add pH sensor reporting for users of Open Sensor API data collection.
+* Display logic for scd-4x sensors.
+
 Growmax v1.1.9
 ==============================
 * Add moisture sensor reporting for users of Open Sensor API data collection.

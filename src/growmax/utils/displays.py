@@ -106,3 +106,21 @@ def display_ph_reading(ph_reading):
             gc.collect()
         except Exception as e:
             print(e)
+
+
+def display_scd4x_reading(temp, rh, ppm_carbon_dioxide):
+    global display
+    if display:
+        try:
+            gc.collect()
+            display.fill(0)
+            display.text("temp ", 0, 0)
+            display.text(str(temp), 64, 0)
+            display.text("rh ", 0, 32)
+            display.text(str(rh), 64, 32)
+            display.text("CO2 ppm ", 0, 64)
+            display.text(str(ppm_carbon_dioxide), 64, 64)
+            display.show()
+            gc.collect()
+        except Exception as e:
+            print(e)
