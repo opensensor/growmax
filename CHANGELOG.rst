@@ -1,3 +1,7 @@
+Growmax v1.1.9
+==============================
+* Add moisture sensor reporting for users of Open Sensor API data collection.
+
 Growmax v1.1.8
 ==============================
 * Fix bug with the new pH meter code to work with esp32s3 MCU.
