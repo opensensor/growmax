@@ -1,3 +1,7 @@
+Growmax v1.1.11
+==============================
+* Refactor and fix a few bugs related to BPI ESP32S3; don't double read the scd4x sensor.
+
 Growmax v1.1.10
 ==============================
 * Add pH sensor reporting for users of Open Sensor API data collection.
