@@ -1,6 +1,6 @@
 import machine
 import utime
-from growmax.utils.i2c import i2c_channel_pins
+from growmax.utils.mcu import i2c_channel_pins
 
 import config
 

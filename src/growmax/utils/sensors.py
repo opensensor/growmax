@@ -1,7 +1,7 @@
 import machine
 import time
 from growmax.sensors import adafruit_scd4x
-from growmax.utils.i2c import i2c_channel_pins
+from growmax.utils.mcu import i2c_channel_pins
 
 
 def init_adafruit_scd4x(i2c_channel=0):
@@ -29,13 +29,11 @@ def init_adafruit_scd4x(i2c_channel=0):
 
 
 def read_adafruit_scd4x(scd4x):
+    time.sleep(2.0)
     if scd4x.data_ready:
         ppm_carbon_dioxide = scd4x.CO2
         temp = scd4x.temperature
         rh = scd4x.relative_humidity
-        print("Temperature: %0.1f *C" % temp)
-        print("Humidity: %0.1f %%" % rh)
-        print("CO2: %d ppm" % ppm_carbon_dioxide)
         return [temp, rh, ppm_carbon_dioxide]
     print("SCD-40 data not available")
-    return []
+    return [None, None, None]

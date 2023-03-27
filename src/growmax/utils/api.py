@@ -23,23 +23,20 @@ def get_device_metadata():
     return report_data
 
 
-def read_adafruit_scd4x_(scd4x, report_data):
-    try:
-        time.sleep(1.0)
-        data = sensors.read_adafruit_scd4x(scd4x)
-        time.sleep(1.0)
+def add_adafruit_scd4x_data_to_report(report_data, temp, rh, ppm_carbon_dioxide):
+    if temp:
         report_data["temp"] = {
-            "temp": data[0],
+            "temp": temp,
             "unit": "C"
         }
+    if rh:
         report_data["rh"] = {
-            "rh": data[1],
+            "rh": rh,
         }
+    if ppm_carbon_dioxide:
         report_data["co2"] = {
-            "ppm": data[2],
+            "ppm": ppm_carbon_dioxide,
         }
-    except Exception as e:
-        print(e)
 
 
 def report_environment_data(report_data):

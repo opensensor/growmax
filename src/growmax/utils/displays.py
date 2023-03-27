@@ -41,7 +41,7 @@ try:
             i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
             display = SH1107_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
         if config.DISPLAY_SWITCH:
-            switch = machine.Pin(config.DISPLAY_SWITCH, machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
+            switch = machine.Pin(get_gpio_for_mcu(config.DISPLAY_SWITCH), machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
             switch.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)
 except Exception as exc:
     print(f"Exception trying to initialize display: {exc}")
@@ -110,6 +110,9 @@ def display_ph_reading(ph_reading):
 
 def display_scd4x_reading(temp, rh, ppm_carbon_dioxide):
     global display
+    print("Temperature: %0.1f *C" % temp)
+    print("Humidity: %0.1f %%" % rh)
+    print("CO2: %d ppm" % ppm_carbon_dioxide)
     if display:
         try:
             gc.collect()
