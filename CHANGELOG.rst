@@ -1,3 +1,7 @@
+Growmax v1.1.12 (Not yet released)
+==============================
+* Increase the I2C frequency of the scd4x sensors so when paired with a display the render time remains quick.
+
 Growmax v1.1.11
 ==============================
 * Refactor and fix a few bugs related to BPI ESP32S3; don't double read the scd4x sensor.

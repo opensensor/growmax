@@ -12,7 +12,7 @@ def init_adafruit_scd4x(i2c_channel=0):
             i2c_channel,
             scl=machine.Pin(pin_scl),
             sda=machine.Pin(pin_sda),
-            freq=5000
+            freq=100000
         )
         time.sleep(2.0)
         scd4x = adafruit_scd4x.SCD4X(i2c)
