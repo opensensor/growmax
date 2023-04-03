@@ -1,3 +1,7 @@
+Growmax v1.1.13
+==============================
+* Realization that ``ujson`` was negatively impacting memory usage when API integration enabled.  Resolved by using builtin ``json``.
+
 Growmax v1.1.12
 ==============================
 * Increase the I2C frequency of the scd4x sensors so when paired with a display the render time remains quick.

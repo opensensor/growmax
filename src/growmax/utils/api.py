@@ -1,7 +1,6 @@
 import machine
 import ubinascii
 import time
-from growmax.utils import sensors
 
 import config
 
@@ -41,15 +40,15 @@ def add_adafruit_scd4x_data_to_report(report_data, temp, rh, ppm_carbon_dioxide)
 
 
 def report_environment_data(report_data):
-    """This method requires installing urequests and ujson from pypi."""
+    """ This method requires installing urequests from pypi. """
     try:
         import urequests
-        import ujson
+        import json
         time.sleep(1.0)
         resp = urequests.post(
             "https://api.opensensor.io/environment/",
             headers=headers,
-            data=ujson.dumps(report_data))
+            data=json.dumps(report_data))
         print(resp.status_code)
         resp.close()
     except Exception as e:
