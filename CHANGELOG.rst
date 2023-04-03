@@ -1,6 +1,7 @@
-Growmax v1.1.12 (Not yet released)
+Growmax v1.1.12
 ==============================
 * Increase the I2C frequency of the scd4x sensors so when paired with a display the render time remains quick.
+* Release alpha support for OpenSensor.io API data reporting.
 
 Growmax v1.1.11
 ==============================

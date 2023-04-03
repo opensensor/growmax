@@ -43,6 +43,6 @@ WIFI_SSID = "SSID"
 WIFI_PASSWORD = ""
 
 # Data collection w/ api.opensensor.io (early alpha testing)
-OPEN_SENSOR_COLLECT_DATA = False  # Please don't enable this for now
-OPEN_SENSOR_API_KEY = None  # Not yet supported
+OPEN_SENSOR_COLLECT_DATA = False
+OPEN_SENSOR_API_KEY = None  # Register your device for a key at https://opensensor.io/members/profile
 DEVICE_NAME = ""

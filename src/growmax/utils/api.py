@@ -17,6 +17,7 @@ def get_device_metadata():
         report_data["device_metadata"] = {
             "device_id": device_id,
             "name": config.DEVICE_NAME,
+            "api_key": config.OPEN_SENSOR_API_KEY,
         }
     except Exception as e:
         print(e)
