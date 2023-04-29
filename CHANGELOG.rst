@@ -1,3 +1,7 @@
+Growmax v1.1.14
+==============================
+* Add configurable motion sensor class and allow its use to drive the display on/off.  See new config values for usage.
+
 Growmax v1.1.13
 ==============================
 * Realization that ``ujson`` was negatively impacting memory usage when API integration enabled.  Resolved by using builtin ``json``.
