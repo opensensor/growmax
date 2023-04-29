@@ -3,6 +3,7 @@ import machine
 import time
 
 from growmax.utils.mcu import get_gpio_for_mcu
+from growmax.sensors.motion import MotionSensor
 
 import config
 
@@ -41,8 +42,15 @@ try:
             i2c = machine.I2C(config.DISPLAY_I2C_CHANNEL, scl=scl, sda=sda, freq=100000)
             display = SH1107_I2C(128, 128, i2c, addr=config.DISPLAY_I2C_ADDRESS)
         if config.DISPLAY_SWITCH:
-            switch = machine.Pin(get_gpio_for_mcu(config.DISPLAY_SWITCH), machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
-            switch.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)
+            pin = machine.Pin(get_gpio_for_mcu(config.DISPLAY_SWITCH), machine.Pin.IN, config.DISPLAY_SWITCH_PULL)
+            if config.DISPLAY_SWITCH_CLASS == "MotionSensor":
+                switch = MotionSensor(
+                    pin,
+                    duration_ms=config.DISPLAY_SWITCH_DURATION_MS,
+                    callback=toggle_display,
+                )
+            else:
+                pin.irq(trigger=config.DISPLAY_SWITCH_TRIGGER, handler=toggle_display)
 except Exception as exc:
     print(f"Exception trying to initialize display: {exc}")
 
