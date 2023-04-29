@@ -7,8 +7,7 @@ class MotionSensor:
 
     def __init__(self, pin, duration_ms=10000, callback=None):
         self.pin = pin
-        self.pin.irq(handler=self._switch_change,
-                     trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING)
+        self.pin.irq(handler=self._switch_change, trigger=Pin.IRQ_RISING)
         self.debounce_timer = Timer(-1)
         self.last_value = pin.value()
         self.duration_ms = duration_ms
@@ -37,8 +36,7 @@ class MotionSensor:
         # Re-enable the Switch IRQ to get the next change
         self.last_value = self.pin.value()
         if not self.last_value:
-            self.pin.irq(handler=self._switch_change,
-                         trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING)
+            self.pin.irq(handler=self._switch_change, trigger=Pin.IRQ_RISING)
         if self.callback:
             self.callback(self)
 
