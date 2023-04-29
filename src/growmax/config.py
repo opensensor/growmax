@@ -33,8 +33,10 @@ ATLAS_PH_METER_ADDRESS = None
 DISPLAY = None   # To enable a display, define an import from growmax.displays, Ex: "SSD1327_I2C", "SH1107_I2C"
 DISPLAY_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
 DISPLAY_I2C_ADDRESS = None  # The address of the display
-DISPLAY_SWITCH = None  # Set GPIO Pin number of the input switch
-DISPLAY_SWITCH_PULL = None  # Set to be None, machine.Pin.PULL_UP or machine.Pin.PULL_DOOWN
+DISPLAY_SWITCH = None  # Set GPIO Pin of the input switch or None to disable
+DISPLAY_SWITCH_CLASS = None  # When set to None, Pin is used directly with interrupt.  Also available: "MotionSensor"
+DISPLAY_SWITCH_DURATION_MS = 10000  # When using MotionSensor, this sets how long to turn on display for in ms
+DISPLAY_SWITCH_PULL = None  # When using pin directly: Set to be None, machine.Pin.PULL_UP or machine.Pin.PULL_DOWN
 DISPLAY_SWITCH_TRIGGER = machine.Pin.IRQ_FALLING | machine.Pin.IRQ_RISING
 
 # Wi-Fi SSID and password
