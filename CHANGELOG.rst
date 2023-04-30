@@ -1,3 +1,7 @@
+Growmax v1.1.15
+==============================
+* Fix edge case of new configurable motion sensor that caused it to get stuck on after a period of time.
+
 Growmax v1.1.14
 ==============================
 * Add configurable motion sensor class and allow its use to drive the display on/off.  See new config values for usage.
