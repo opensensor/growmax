@@ -26,8 +26,6 @@ class Moisture(object):
 
         self._count = 0
         self._reading = 0
-        self._history = []
-        self._history_length = 200
         self._last_pulse = utime.time()
         self._new_data = False
         self._wet_point = wet_point if wet_point is not None else 0.7
@@ -46,22 +44,9 @@ class Moisture(object):
         self._last_pulse = utime.time()
         if self._time_elapsed >= 3.0:
             self._reading = self._count / self._time_elapsed
-            self._history.insert(0, self._reading)
-            self._history = self._history[:self._history_length]
             self._count = 0
             self._time_last_reading = utime.time()
             self._new_data = True
-
-    @property
-    def history(self):
-        history = []
-
-        for moisture in self._history:
-            saturation = float(moisture - self._dry_point) / self.range
-            saturation = round(saturation, 3)
-            history.append(max(0.0, min(1.0, saturation)))
-
-        return history
 
     @property
     def _time_elapsed(self):

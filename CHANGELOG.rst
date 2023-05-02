@@ -1,3 +1,7 @@
+Growmax v1.2.0
+==============================
+* Fix memory fragmentation issue impacting the display drivers by updating the ``Moisture`` class to not store long history of readings.
+
 Growmax v1.1.15
 ==============================
 * Fix edge case of new configurable motion sensor that caused it to get stuck on after a period of time.
