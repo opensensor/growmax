@@ -7,7 +7,7 @@ To purchase a Growmax board or four sourcing parts, visit https://opensensor.io
 
 
 # Installation
-To install the ``growmax`` package on a Pico or Pico W, first install the appropriate firmware for Micropython that is for your device.
+To install the ``growmax`` package on a Pico or BananaPi Pico (ESP32S3), first install the appropriate firmware for Micropython that is for your device.
 * Pico: https://micropython.org/download/rp2-pico/
 * Pico W:  https://micropython.org/download/rp2-pico-w/
 
