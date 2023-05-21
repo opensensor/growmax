@@ -91,6 +91,13 @@ def main():
                     "pH": ph_reading
                 }
             api.report_environment_data(report_data)
+        if config.OPEN_SENSOR_RETRIEVE_COMMANDS:
+            command_parts = api.retrieve_command()  # Experimental
+            if command_parts and len(command_parts) == 3 and command_parts[0] == "WATER":
+                print("WATER", command_parts[1], command_parts[2])
+                pos = int(command_parts[1]) - 1
+                duration = int(command_parts[2])
+                pumps[pos].dose(1, duration)
         if scd40x:
             display_scd4x_reading(temp, rh, ppm_carbon_dioxide)
             utime.sleep(3)

@@ -53,3 +53,25 @@ def report_environment_data(report_data):
         resp.close()
     except Exception as e:
         print(e)
+
+
+def retrieve_command():
+    """ This method requires installing urequests from pypi. """
+    try:
+        import urequests
+        import json
+        time.sleep(1.0)
+        metadata = get_device_metadata()
+        metadata["device_id"] = metadata["device_metadata"]["device_id"]
+        metadata["name"] = metadata["device_metadata"]["name"]
+        metadata["api_key"] = metadata["device_metadata"]["api_key"]
+        resp = urequests.post(
+            "https://api.opensensor.io/command/consume",
+            headers=headers,
+            data=json.dumps(metadata))
+        data = resp.json()
+        if data and data.get("command"):
+            parts = data["command"].split(",")
+            return parts
+    except Exception as e:
+        pass

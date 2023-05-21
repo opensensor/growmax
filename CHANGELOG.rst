@@ -1,3 +1,7 @@
+Growmax v1.2.1
+==============================
+* Beta functionality to issue watering commands from the OpenSensor.io API.
+
 Growmax v1.2.0
 ==============================
 * Fix memory fragmentation issue impacting the display drivers by updating the ``Moisture`` class to not store long history of readings.

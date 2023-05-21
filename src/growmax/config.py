@@ -48,3 +48,4 @@ WIFI_PASSWORD = ""
 OPEN_SENSOR_COLLECT_DATA = False
 OPEN_SENSOR_API_KEY = None  # Register your device for a key at https://opensensor.io/members/profile
 DEVICE_NAME = ""
+OPEN_SENSOR_RETRIEVE_COMMANDS = False  # Experimental feature to retrieve commands from the cloud
