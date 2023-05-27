@@ -1,3 +1,9 @@
+Growmax v1.2.2
+==============================
+* Added support for 4 and 8 channel relay boards.  See new config values for usage.
+* Added auto-refill water reservoir functionality; requires external relay board and ball valve or solenoid.
+* Added safety checks around accessing newly added config values.
+
 Growmax v1.2.1
 ==============================
 * Beta functionality to issue watering commands from the OpenSensor.io API.
