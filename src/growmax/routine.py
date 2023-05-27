@@ -65,15 +65,15 @@ def main():
         for position, soil_sensor in enumerate(soil_sensors):
             try:
                 pump_position = str(position + 1)
-                soil_moisture = soil_sensor.moisture
-                soil_moisture.append(soil_moisture)
+                reading = soil_sensor.moisture
+                soil_moisture.append(reading)
                 has_water = water_sensor and statistically_has_water(water_sensor)
                 moisture_config = get_moisture_threshold_for_position(position)
                 print("Position ", pump_position,
                       " reservoir has water ", has_water,
-                      " and moisture value ", soil_moisture, "/", moisture_config)
-                display_basic_stats(has_water, pump_position, soil_moisture, moisture_config)
-                if (config.PUMP_WHEN_DRY or has_water) and soil_moisture >= moisture_config:
+                      " and moisture value ", reading, "/", moisture_config)
+                display_basic_stats(has_water, pump_position, reading, moisture_config)
+                if (config.PUMP_WHEN_DRY or has_water) and reading >= moisture_config:
                     print("position: ", pump_position)
                     pumps[position].dose(1, config.PUMP_CYCLE_DURATION)
                 utime.sleep(2)

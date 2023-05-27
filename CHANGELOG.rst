@@ -1,3 +1,7 @@
+Growmax v1.2.3
+==============================
+* Immediate bugfix release for v1.2.2.  There was a variable name collision in the recent refactoring.
+
 Growmax v1.2.2
 ==============================
 * Added support for 4 and 8 channel relay boards.  See new config values for usage.
