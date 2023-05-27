@@ -1,6 +1,10 @@
+import config  # User's config file
 
-# User's config file
-import config
+
+def get_config_value(key, default=None):
+    if hasattr(config, key):
+        return getattr(config, key)
+    return default
 
 
 def get_moisture_threshold_for_position(position):

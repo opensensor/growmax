@@ -19,6 +19,14 @@ WATER_SENSOR_HIGH = 21  # Not yet implemented
 PUMP_WHEN_DRY = False
 PUMP_CYCLE_DURATION = 30  # seconds -- avoid long pump times as it does not check if reservoir is low while pumping!
 
+# External Relay board settings
+RELAY_BOARD_ENABLED = False
+RELAY_BOARD_I2C_CHANNEL = 0  # 0 for QWIIC_I2C0 or 1 for QWIIC_I2C1
+RELAY_BOARD_NUM_RELAYS = 4  # 4 or 8
+RELAY_BOARD_I2C_ADDRESS = 0x27  # The address of the relay board
+# Auto-refill reservoir when low (requires water sensor and relay board)
+AUTO_REFILL_RELAY_POSITION = None  # 1-8; None to disable
+AUTO_REFILL_DURATION = 45  # seconds
 
 # Auxiliary Sensors settings
 ADAFRUIT_SCD4X_ENABLED = False

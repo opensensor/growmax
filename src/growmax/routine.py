@@ -7,9 +7,10 @@ from growmax.atlas_ph.i2c import AtlasPHI2C
 from growmax.moisture import Moisture
 from growmax.pump import Pump
 from growmax.utils import api
-from growmax.utils.configs import get_moisture_threshold_for_position
+from growmax.utils.configs import get_config_value, get_moisture_threshold_for_position
 from growmax.utils.displays import boot_sequence, display_basic_stats, display_ph_reading, display_scd4x_reading
 from growmax.utils.mcu import get_gpio_for_mcu
+from growmax.utils.relays import initialize_relay_board
 from growmax.utils.sensors import init_adafruit_scd4x, read_adafruit_scd4x
 from growmax.utils.water import statistically_has_water
 from growmax.utils.wifi import ensure_wifi_connected
@@ -25,10 +26,11 @@ def main():
     boot_sequence()
 
     water_sensor = None
-    if config.WATER_SENSOR_LOW_ENABLED:
+    if get_config_value("WATER_SENSOR_LOW_ENABLED"):
         water_sensor = Pin(get_gpio_for_mcu(config.WATER_SENSOR_LOW), Pin.IN, Pin.PULL_DOWN)
     scd40x = None
     atlas_ph = None
+    relay_board = initialize_relay_board()
 
     soil_sensors = [Moisture(channel=1), Moisture(channel=2), Moisture(channel=3), Moisture(channel=4),
                     Moisture(channel=5), Moisture(channel=6), Moisture(channel=7), Moisture(channel=8)]
@@ -47,18 +49,24 @@ def main():
         if config.ADAFRUIT_SCD4X_ENABLED and scd40x is None:
             scd40x = init_adafruit_scd4x(config.ADAFRUIT_SCD4X_I2C_CHANNEL)
 
-        if hasattr(config, "ATLAS_PH_METER_ENABLED") and config.ATLAS_PH_METER_ENABLED:
+        if get_config_value("ATLAS_PH_METER_ENABLED"):
             try:
                 atlas_ph = AtlasPHI2C(config.ATLAS_PH_I2C_CHANNEL)
             except Exception as e:
                 print(f"Error initializing Atlas pH probe: {e}")
 
-        soil_moistures = []
+        has_water = water_sensor and statistically_has_water(water_sensor)
+        if not has_water and relay_board and get_config_value("AUTO_REFILL_RELAY_POSITION"):
+            relay_board.turn_on(get_config_value("AUTO_REFILL_RELAY_POSITION"))
+            utime.sleep(get_config_value("AUTO_REFILL_DURATION", 45))
+            relay_board.turn_off(get_config_value("AUTO_REFILL_RELAY_POSITION"))
+
+        soil_moisture = []
         for position, soil_sensor in enumerate(soil_sensors):
             try:
                 pump_position = str(position + 1)
                 soil_moisture = soil_sensor.moisture
-                soil_moistures.append(soil_moisture)
+                soil_moisture.append(soil_moisture)
                 has_water = water_sensor and statistically_has_water(water_sensor)
                 moisture_config = get_moisture_threshold_for_position(position)
                 print("Position ", pump_position,
@@ -84,17 +92,17 @@ def main():
             if scd40x:
                 api.add_adafruit_scd4x_data_to_report(report_data, temp, rh, ppm_carbon_dioxide)
             report_data["moisture"] = {
-                "readings": soil_moistures
+                "readings": soil_moisture
             }
             if atlas_ph and ph_reading:
                 report_data["pH"] = {
                     "pH": ph_reading
                 }
             api.report_environment_data(report_data)
-        if config.OPEN_SENSOR_RETRIEVE_COMMANDS:
+        has_water = water_sensor and statistically_has_water(water_sensor)
+        if get_config_value("OPEN_SENSOR_RETRIEVE_COMMANDS") and (config.PUMP_WHEN_DRY or has_water):
             command_parts = api.retrieve_command()  # Experimental
             if command_parts and len(command_parts) == 3 and command_parts[0] == "WATER":
-                print("WATER", command_parts[1], command_parts[2])
                 pos = int(command_parts[1]) - 1
                 duration = int(command_parts[2])
                 pumps[pos].dose(1, duration)
@@ -105,7 +113,7 @@ def main():
             display_ph_reading(ph_reading)
             utime.sleep(3)
 
-        print("Completed iteration; soil_moisture's = ", str(soil_moistures))
+        print("Completed iteration; soil_moisture's = ", str(soil_moisture))
         print("Free mem before garbage collection: ", str(gc.mem_free()))
         gc.collect()
         print("Free mem after garbage collection: ", str(gc.mem_free()))
