@@ -1,3 +1,7 @@
+Growmax v1.2.4
+==============================
+* Fix addressing behavior of 4 relay board to match 8-bit addressing expectations.
+
 Growmax v1.2.3
 ==============================
 * Immediate bugfix release for v1.2.2.  There was a variable name collision in the recent refactoring.
