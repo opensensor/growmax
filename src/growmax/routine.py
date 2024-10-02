@@ -55,12 +55,6 @@ def main():
             except Exception as e:
                 print(f"Error initializing Atlas pH probe: {e}")
 
-        has_water = water_sensor and statistically_has_water(water_sensor)
-        if not has_water and relay_board and get_config_value("AUTO_REFILL_RELAY_POSITION"):
-            relay_board.turn_on(get_config_value("AUTO_REFILL_RELAY_POSITION"))
-            utime.sleep(get_config_value("AUTO_REFILL_DURATION", 45))
-            relay_board.turn_off(get_config_value("AUTO_REFILL_RELAY_POSITION"))
-
         soil_moisture = []
         for position, soil_sensor in enumerate(soil_sensors):
             try:
@@ -82,6 +76,24 @@ def main():
 
         ph_reading = None
         temp, rh, ppm_carbon_dioxide = None, None, None
+        # Check if we need to refill the water reservoir
+        has_water = water_sensor and statistically_has_water(water_sensor)
+        relay_water_position = get_config_value("AUTO_REFILL_RELAY_POSITION")
+        relay_refill_duration = get_config_value("AUTO_REFILL_DURATION", 45)
+        relay_refilled = False
+        if not has_water and relay_board and relay_water_position:
+            relay_board.turn_on(relay_water_position)
+            utime.sleep(relay_refill_duration)
+            relay_board.turn_off(relay_water_position)
+            relay_refilled = True
+        # Check if we have any remote commands to execute
+        if get_config_value("OPEN_SENSOR_RETRIEVE_COMMANDS") and (config.PUMP_WHEN_DRY or has_water):
+            command_parts = api.retrieve_command()  # Experimental
+            if command_parts and len(command_parts) == 3 and command_parts[0] == "WATER":
+                pos = int(command_parts[1]) - 1
+                duration = int(command_parts[2])
+                pumps[pos].dose(1, duration)
+        # Check other sensors
         if atlas_ph:
             utime.sleep(1.0)
             ph_reading = atlas_ph.obtain_ph_reading()
@@ -89,23 +101,41 @@ def main():
             temp, rh, ppm_carbon_dioxide = read_adafruit_scd4x(scd40x)
         if config.OPEN_SENSOR_COLLECT_DATA:
             report_data = api.get_device_metadata()
-            if scd40x:
-                api.add_adafruit_scd4x_data_to_report(report_data, temp, rh, ppm_carbon_dioxide)
+            report_data["liquid"] = {
+                "liquid": has_water
+            }
             report_data["moisture"] = {
                 "readings": soil_moisture
             }
+            if scd40x:
+                api.add_adafruit_scd4x_data_to_report(report_data, temp, rh, ppm_carbon_dioxide)
             if atlas_ph and ph_reading:
                 report_data["pH"] = {
                     "pH": ph_reading
                 }
+            if relay_refilled:
+                report_data["relays"] = {
+                    "relays": [
+                        {
+                            "position": relay_water_position,
+                            "enabled": True,
+                            "seconds": relay_refill_duration,
+                            "description": "Auto refill water reservoir"
+                        }
+                    ]
+                }
+            elif relay_board:
+                report_data["relays"] = {
+                    "relays": [
+                        {
+                            "position": relay_water_position,
+                            "enabled": False,
+                            "seconds": 0,
+                            "description": "Auto refill water reservoir"
+                        }
+                    ]
+                }
             api.report_environment_data(report_data)
-        has_water = water_sensor and statistically_has_water(water_sensor)
-        if get_config_value("OPEN_SENSOR_RETRIEVE_COMMANDS") and (config.PUMP_WHEN_DRY or has_water):
-            command_parts = api.retrieve_command()  # Experimental
-            if command_parts and len(command_parts) == 3 and command_parts[0] == "WATER":
-                pos = int(command_parts[1]) - 1
-                duration = int(command_parts[2])
-                pumps[pos].dose(1, duration)
         if scd40x:
             display_scd4x_reading(temp, rh, ppm_carbon_dioxide)
             utime.sleep(3)
