@@ -1,3 +1,8 @@
+Growmax v1.2.6
+==============================
+* Only report active relays (assume non-reported relays as inactive)
+
+
 Growmax v1.2.5
 ==============================
 * Add additional data reporting for the OpenSensor.io API monitoring users, to show liquid level and external relay board states.
