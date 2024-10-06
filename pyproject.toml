@@ -1,3 +1,30 @@
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "growmax"
+version = "1.2.7"
+description = "Micropython routines for automated plant watering and monitoring."
+authors = [
+    {name = "Matt Davis and OpenSensor.io", email = "matteius@gmail.com"},
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: Implementation :: MicroPython",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://www.opensensor.io"
+Repository = "https://github.com/opensensor/growmax.git"
+Issues = "https://github.com/opensensor/growmax/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

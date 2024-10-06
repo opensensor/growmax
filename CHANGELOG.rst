@@ -1,3 +1,7 @@
+Growmax v1.2.7
+==============================
+* Update project to remove setup.cfg and rely on more complete pyproject.toml for build configuration.
+
 Growmax v1.2.6
 ==============================
 * Only report active relays (assume non-reported relays as inactive)
