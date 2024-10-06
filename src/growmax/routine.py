@@ -124,17 +124,6 @@ def main():
                         }
                     ]
                 }
-            elif relay_board:
-                report_data["relays"] = {
-                    "relays": [
-                        {
-                            "position": relay_water_position,
-                            "enabled": False,
-                            "seconds": 0,
-                            "description": "Auto refill water reservoir"
-                        }
-                    ]
-                }
             api.report_environment_data(report_data)
         if scd40x:
             display_scd4x_reading(temp, rh, ppm_carbon_dioxide)
