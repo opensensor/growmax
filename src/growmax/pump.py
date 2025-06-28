@@ -7,6 +7,7 @@ import time
 
 from growmax import constants
 from growmax.utils.mcu import get_gpio_for_mcu
+from growmax.pump_tracker import record_pump_dose
 
 
 PUMP_PWM_FREQ = 10000
@@ -22,6 +23,7 @@ class Pump(object):
         :param channel: One of 1, 2 or 3.
         """
         self._speed = 0
+        self._channel = channel  # Store channel for pump tracking
         rp2040_pin = constants.PUMP_GPIOS[channel - 1]
         self._pin = get_gpio_for_mcu(rp2040_pin)
         self._gpio_pin = machine.Pin(self._pin)
@@ -63,6 +65,9 @@ class Pump(object):
         """
         print(f"Dose pump on GPIO pin {self._pin} at speed {speed} for {timeout} seconds.")
         if self.set_speed(speed):
+            # Record pump activity for API reporting
+            record_pump_dose(self._channel, speed, timeout)
+            
             time.sleep(timeout)
             self.stop()
             return True
