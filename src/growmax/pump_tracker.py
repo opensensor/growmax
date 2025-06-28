@@ -4,13 +4,12 @@ Tracks pump dosing events and provides data for API reporting
 """
 
 import utime
-from typing import List, Dict, Optional
 
 
 class PumpActivity:
     """Represents a single pump activity event"""
     
-    def __init__(self, position: int, speed: float, duration: float, timestamp: Optional[float] = None):
+    def __init__(self, position, speed, duration, timestamp=None):
         self.position = position  # 1-8
         self.speed = speed  # 0.0 - 1.0
         self.duration = duration  # seconds
@@ -22,12 +21,12 @@ class PumpActivity:
 class PumpTracker:
     """Tracks pump activities for reporting to OpenSensor API"""
     
-    def __init__(self, max_activities: int = 50):
-        self.activities: List[PumpActivity] = []
+    def __init__(self, max_activities=50):
+        self.activities = []
         self.max_activities = max_activities
-        self.current_session_activities: List[PumpActivity] = []
+        self.current_session_activities = []
     
-    def record_pump_activity(self, position: int, speed: float, duration: float) -> None:
+    def record_pump_activity(self, position, speed, duration):
         """Record a pump dosing event"""
         activity = PumpActivity(position, speed, duration)
         
@@ -43,7 +42,7 @@ class PumpTracker:
         
         print(f"Recorded pump activity: {activity.description}")
     
-    def get_session_activities(self) -> List[Dict]:
+    def get_session_activities(self):
         """Get activities from current session for API reporting"""
         activities_data = []
         
@@ -59,11 +58,11 @@ class PumpTracker:
         
         return activities_data
     
-    def clear_session_activities(self) -> None:
+    def clear_session_activities(self):
         """Clear current session activities after successful API report"""
         self.current_session_activities.clear()
     
-    def get_recent_activities(self, minutes: int = 60) -> List[Dict]:
+    def get_recent_activities(self, minutes=60):
         """Get activities from the last N minutes"""
         cutoff_time = utime.time() - (minutes * 60)
         recent_activities = []
@@ -81,7 +80,7 @@ class PumpTracker:
         
         return recent_activities
     
-    def get_pump_statistics(self) -> Dict:
+    def get_pump_statistics(self):
         """Get pump usage statistics"""
         stats = {
             "total_activities": len(self.activities),
@@ -107,21 +106,21 @@ class PumpTracker:
 pump_tracker = PumpTracker()
 
 
-def record_pump_dose(position: int, speed: float, duration: float) -> None:
+def record_pump_dose(position, speed, duration):
     """Convenience function to record pump activity"""
     pump_tracker.record_pump_activity(position, speed, duration)
 
 
-def get_pump_activities_for_api() -> List[Dict]:
+def get_pump_activities_for_api():
     """Get pump activities for API reporting"""
     return pump_tracker.get_session_activities()
 
 
-def clear_reported_activities() -> None:
+def clear_reported_activities():
     """Clear activities after successful API report"""
     pump_tracker.clear_session_activities()
 
 
-def get_pump_stats() -> Dict:
+def get_pump_stats():
     """Get pump usage statistics"""
     return pump_tracker.get_pump_statistics()
