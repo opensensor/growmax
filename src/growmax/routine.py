@@ -8,6 +8,7 @@ from growmax.moisture import Moisture
 from growmax.pump import Pump
 from growmax.utils import api
 from growmax.utils.configs import get_config_value, get_moisture_threshold_for_position
+from growmax.pump_tracker import get_pump_activities_for_api, clear_reported_activities
 from growmax.utils.displays import boot_sequence, display_basic_stats, display_ph_reading, display_scd4x_reading
 from growmax.utils.mcu import get_gpio_for_mcu
 from growmax.utils.relays import initialize_relay_board
@@ -113,18 +114,38 @@ def main():
                 report_data["pH"] = {
                     "pH": ph_reading
                 }
-            if relay_refilled:
-                report_data["relays"] = {
-                    "relays": [
-                        {
-                            "position": relay_water_position,
-                            "enabled": True,
-                            "seconds": relay_refill_duration,
-                            "description": "Auto refill water reservoir"
-                        }
-                    ]
+            
+            # Collect pump activities for reporting
+            pump_activities = get_pump_activities_for_api()
+            relay_activities = []
+            
+            # Add pump activities as "pumps" data
+            if pump_activities:
+                report_data["pumps"] = {
+                    "pumps": pump_activities
                 }
-            api.report_environment_data(report_data)
+            
+            # Add relay activities (auto-refill)
+            if relay_refilled:
+                relay_activities.append({
+                    "position": relay_water_position,
+                    "enabled": True,
+                    "seconds": relay_refill_duration,
+                    "description": "Auto refill water reservoir"
+                })
+            
+            if relay_activities:
+                report_data["relays"] = {
+                    "relays": relay_activities
+                }
+            
+            # Report to API
+            try:
+                api.report_environment_data(report_data)
+                # Clear pump activities after successful report
+                clear_reported_activities()
+            except Exception as e:
+                print(f"Error reporting to API: {e}")
         if scd40x:
             display_scd4x_reading(temp, rh, ppm_carbon_dioxide)
             utime.sleep(3)
